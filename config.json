@@ -1,0 +1,43 @@
+{
+  "backfill_settings": {
+    "start_date": "2025-01-01",
+    "end_date": "2025-03-31",
+    "commit_frequency_per_day": 0.75
+  },
+  "commit_clustering": {
+    "enabled": true,
+    "min_commits_per_cluster": 2,
+    "max_commits_per_cluster": 5
+  },
+  "run_settings": {
+    "min_commits_to_alter": 2,
+    "max_commits_to_alter": 5,
+    "working_hours": {
+      "enabled": true,
+      "start_hour": 9,
+      "end_hour": 17,
+      "work_on_saturday": false,
+      "work_on_sunday": false
+    },
+    "skip_run_chance": 0.25
+  },
+  "commit_content": {
+    "target_file": "activity_log.md",
+    "line_prefix": "- Log entry:"
+  },
+  "commit_persona": {
+    "author": {
+      "name": "Your Name",
+      "email": "your_email@example.com"
+    },
+    "commit_messages": [
+      "refactor: Improve modularity and code structure",
+      "feat: Implement new data caching mechanism",
+      "fix: Address race condition in async processing",
+      "docs: Add architectural diagrams to documentation",
+      "style: Enforce consistent formatting across codebase",
+      "test: Add integration tests for API services",
+      "chore: Upgrade build environment and dependencies"
+    ]
+  }
+}
