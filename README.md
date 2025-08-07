@@ -18,6 +18,8 @@ Safety First: Includes a --dry-run flag for the backfill command to preview chan
 
 CI/CD Integration: Comes with a pre-configured GitHub Actions workflow for automated, scheduled runs.
 
+Unit Testing: Includes a test suite to verify the script's logic without performing real Git operations.
+
 🏗️ Architecture Overview
 The application is composed of three core components that work together:
 
@@ -81,6 +83,17 @@ Perform a Regular Run:
 This command is what the GitHub Action uses. It will amend a few recent commits to simulate daily activity.
 
 python vary_history.py run
+
+🧪 Testing
+This project includes a suite of unit tests to ensure the core logic is working correctly. The tests are located in the `tests/` directory and use Python's built-in `unittest` framework.
+
+The tests are designed to run without making any actual changes to your repository's history by using mock objects.
+
+To run the tests, execute the following command from the root of the repository:
+
+python tests/test_vary_history.py
+
+A GitHub Actions workflow is also configured to run these tests automatically on every push and pull request to the `main` branch.
 
 5. GitHub Actions Setup (for Automation)
 To enable the scheduled runs, you must provide the workflow with a Personal Access Token (PAT) so it has permission to push to your repository.
