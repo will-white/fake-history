@@ -1,2 +1,2 @@
 # Used to interact with the Git repository
-GitPython==3.1.43
+GitPython==3.1.45
