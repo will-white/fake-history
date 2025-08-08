@@ -1,0 +1,50 @@
+name: Deploy to Google Cloud Functions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # These permissions are required for the Google Auth action.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # This is the recommended authentication method.
+          # See the DEPLOY_GUIDE.md for setup instructions.
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy Google Cloud Function
+        id: deploy
+        run: |
+          gcloud functions deploy ${{ secrets.GCP_FUNCTION_NAME }} \
+            --gen2 \
+            --region=${{ secrets.GCP_REGION }} \
+            --runtime=python312 \
+            --source=. \
+            --entry-point=run_history_variation \
+            --trigger-topic=github-history-faker \
+            --set-env-vars="GH_PAT=${{ secrets.GH_PAT }},REPO_URL=${{ secrets.REPO_URL }},GIT_BRANCH=main" \
+            --quiet
+
+      - name: "Success!"
+        run: |
+          echo "Function successfully deployed."
+          echo "View it in the console: https://console.cloud.google.com/functions/details/${{ secrets.GCP_REGION }}/${{ secrets.GCP_FUNCTION_NAME }}?project=${{ secrets.GCP_PROJECT_ID }}"
